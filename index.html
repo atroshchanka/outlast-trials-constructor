@@ -1,646 +1,1190 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Конструктор испытаний - The Outlast Trials</title>
     <style>
-        :root {
-            --dark-bg: #0d0d0d;
-            --accent-red: #cc0000;
-            --text-primary: #e0e0e0;
-            --section-bg: #1a1a1a;
-            --focus-color: #ff4444;
-        }
+      :root {
+        --dark-bg: #0d0d0d;
+        --accent-red: #cc0000;
+        --text-primary: #e0e0e0;
+        --section-bg: #1a1a1a;
+        --focus-color: #ff4444;
+      }
 
-        body {
-            font-family: 'Arial', sans-serif;
-            background: var(--dark-bg);
-            color: var(--text-primary);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            gap: 30px;
-        }
+      body {
+        font-family: "Arial", sans-serif;
+        background: var(--dark-bg);
+        color: var(--text-primary);
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        gap: 30px;
+      }
 
-        .constructor-panel {
-            width: 400px;
-            min-height: 90vh;
-            border-right: 2px solid #333;
-            padding-right: 20px;
-        }
+      .constructor-panel {
+        width: 400px;
+        min-height: 90vh;
+        border-right: 2px solid #333;
+        padding-right: 20px;
+      }
 
-        .selection-panel {
-            flex: 1;
-            padding-left: 20px;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
+      .selection-panel {
+        flex: 1;
+        padding-left: 20px;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
 
-        .selected-trial {
-            background: var(--section-bg);
-            padding: 20px;
-            margin-bottom: 20px;
-            position: relative;
-            transition: all 0.3s;
-        }
+      .selected-trial {
+        background: var(--section-bg);
+        padding: 20px;
+        margin-bottom: 20px;
+        position: relative;
+        transition: all 0.3s;
+      }
 
-        .selected-trial:focus-within {
-            outline: 2px solid var(--focus-color);
-        }
+      .selected-trial:focus-within {
+        outline: 2px solid var(--focus-color);
+      }
 
-        .selected-trial img {
-            width: 100%;
-            height: 210px;
-            object-fit: cover;
-            margin-bottom: 15px;
-        }
+      .selected-trial img {
+        width: 100%;
+        height: 210px;
+        object-fit: cover;
+        margin-bottom: 15px;
+      }
 
-        .code-input-section {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
+      .code-input-section {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+      }
 
-        .code-input {
-            background: #252525;
-            border: 1px solid #444;
-            color: white;
-            padding: 10px;
-            flex: 1;
-            transition: all 0.3s;
-        }
+      .code-input {
+        background: #252525;
+        border: 1px solid #444;
+        color: white;
+        padding: 10px;
+        flex: 1;
+        transition: all 0.3s;
+      }
 
-        .code-input:focus {
-            outline: 2px solid var(--focus-color);
-            border-color: transparent;
-        }
+      .code-input:focus {
+        outline: 2px solid var(--focus-color);
+        border-color: transparent;
+      }
 
-        .variator-slots {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 20px;
-        }
+      .variator-slots {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-top: 20px;
+      }
 
-        .variator-slot {
-            background: #252525;
-            border: 2px dashed #444;
-            height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            flex-direction: column;
-            transition: all 0.3s;
-        }
+      .variator-slot {
+        background: #252525;
+        border: 2px dashed #444;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex-direction: column;
+        transition: all 0.3s;
+      }
 
-        .variator-slot.filled {
-            border-style: solid;
-            background: #330000;
-            border-color: var(--accent-red);
-        }
+      .variator-slot.filled {
+        border-style: solid;
+        background: #330000;
+        border-color: var(--accent-red);
+      }
 
-        .variator-slot:focus {
-            outline: 2px solid var(--focus-color);
-        }
+      .variator-slot:focus {
+        outline: 2px solid var(--focus-color);
+      }
 
-        .category-header {
-            font-size: 1.2em;
-            color: var(--accent-red);
-            margin: 20px 0 10px;
-            padding-bottom: 5px;
-            border-bottom: 2px solid #333;
-        }
+      .category-header {
+        font-size: 1.2em;
+        color: var(--accent-red);
+        margin: 20px 0 10px;
+        padding-bottom: 5px;
+        border-bottom: 2px solid #333;
+      }
 
-        .item-card {
-            padding: 15px;
-            background: #252525;
-            margin: 10px 0;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: all 0.3s;
-        }
+      .item-card {
+        width: 90%;
+        padding: 15px;
+        background: #252525;
+        margin: 10px 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        transition: all 0.3s;
+      }
 
-        .item-card:focus,
-        .item-card:hover {
-            outline: 2px solid var(--focus-color);
-            transform: translateX(5px);
-        }
+      .item-card:focus,
+      .item-card:hover {
+        outline: 2px solid var(--focus-color);
+        transform: translateX(1.02);
+      }
 
-        .item-card.active {
-            background: #330000;
-            border-left: 4px solid var(--focus-color);
-        }
+      .item-card.disable {
+        pointer-events: none !important;
+        opacity: 0.5;
+      }
 
-        button {
-            background: #333;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
+      .item-card.active {
+        background: #330000;
+        border-left: 4px solid var(--focus-color);
+      }
 
-        button:focus,
-        button:hover {
-            background: #444;
-            outline: 2px solid var(--focus-color);
-        }
+      button {
+        background: #333;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      button:focus,
+      button:hover {
+        background: #444;
+        outline: 2px solid var(--focus-color);
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="constructor-panel">
-        <h2>КОНСТРУКТОР ИСПЫТАНИЙ</h2>
-        
-        <div class="selected-trial" tabindex="0">
-            <div id="trialContent">Выберите испытание</div>
-            <button onclick="showMainMenu()" class="focusable">Изменить испытание</button>
-        </div>
+      <h2>КОНСТРУКТОР ИСПЫТАНИЙ</h2>
 
-        <h3>ВАРИАТОРЫ (<span id="variatorCount">0</span>/6)</h3>
-        <div class="variator-slots" id="variatorSlots"></div>
+      <div class="selected-trial" tabindex="0">
+        <div id="trialContent">Выберите испытание</div>
+        <button onclick="showMainMenu()" class="focusable">
+          Изменить испытание
+        </button>
+      </div>
 
-        <div class="code-input-section">
-            <input type="text" class="code-input focusable" id="codeInput" placeholder="Введите код испытания">
-            <button onclick="applyCode()" class="focusable">Применить</button>
-        </div>
-        <div class="code-input-section">
-            <input type="text" class="code-input focusable" id="codeOutput" readonly>
-            <button onclick="copyCode()" class="focusable">Копировать</button>
-        </div>
+      <h3>ВАРИАТОРЫ (<span id="variatorCount">0</span>/6)</h3>
+      <div class="variator-slots" id="variatorSlots"></div>
+
+      <div class="code-input-section">
+        <input
+          type="text"
+          class="code-input focusable"
+          id="codeInput"
+          placeholder="Введите код испытания"
+        />
+        <button onclick="applyCode()" class="focusable">Применить</button>
+      </div>
+      <div class="code-input-section">
+        <input
+          type="text"
+          class="code-input focusable"
+          id="codeOutput"
+          readonly
+        />
+        <button onclick="copyCode()" class="focusable">Копировать</button>
+      </div>
     </div>
 
     <div class="selection-panel" id="selectionPanel"></div>
 
-<script>
-const trials = {
-    long: [
-        {
-            id: 'L1',
-            name: 'УБЕЙТЕ СТУКАЧА',
-            desc: 'Доставьте стукача в камеру смерти',
+    <script>
+      const trials = {
+        long: [
+          {
+            id: "L1",
+            name: "УБЕЙТЕ СТУКАЧА",
+            desc: "Доставьте стукача в камеру смерти",
             // img: 'images/L1.png'
+          },
+          {
+            id: "L2",
+            name: "Измельчите негодяев",
+            desc: "Доставьте стукача в камеру смерти",
+            // img: 'https://via.placeholder.com/200x120'
+          },
+          {
+            id: "L3",
+            name: "Причастите сирот",
+            desc: "Доставьте стукача в камеру смерти",
+            // img: 'https://via.placeholder.com/200x120'
+          },
+          {
+            id: "L4",
+            name: "Оправдать виновного",
+            desc: "Доставьте стукача в камеру смерти",
+            // img: 'https://via.placeholder.com/200x120'
+          },
+          {
+            id: "L5",
+            name: "Извратить футерманао",
+            desc: "Доставьте стукача в камеру смерти",
+            // img: 'https://via.placeholder.com/200x120'
+          },
+          {
+            id: "L6",
+            name: "Отравите лекарство",
+            desc: "Доставьте стукача в камеру смерти",
+            // img: 'https://via.placeholder.com/200x120'
+          },
+          {
+            id: "L7",
+            name: "Порадуйте прокурора",
+            desc: "Доставьте стукача в камеру смерти",
+            // img: 'https://via.placeholder.com/200x120'
+          },
+          {
+            id: "L8",
+            name: "Ликвидируйте профсоюз",
+            desc: "Доставьте стукача в камеру смерти",
+            // img: 'https://via.placeholder.com/200x120'
+          },
+        ],
+        short: [
+          {
+            id: "S1",
+            name: "Отмените вскрытие",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S2",
+            name: "Cаботируйте карантин",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S3",
+            name: "уничтожьте прошлое",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S4",
+            name: "Освободите заключённых",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S5",
+            name: "обучите полицейского",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S6",
+            name: "накажите негодяев",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S7",
+            name: "Откройте ворота",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S8",
+            name: "сломайте футерманов",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S9",
+            name: "просверлить футермана",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S10",
+            name: "накормить детей",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S11",
+            name: "приютите сирот",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S12",
+            name: "воссоедините семью",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S13",
+            name: "Соберите детей божьих",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S14",
+            name: "сбегите из суда",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S15",
+            name: "уничтожьте улики",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S16",
+            name: "запятая отпирающий механизм",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S17",
+            name: "склоните Весы правосудия",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S18",
+            name: "раздавите секс игрушки",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S19",
+            name: "сожгите секс игрушки",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S20",
+            name: "Прекратите работу фабрики",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S21",
+            name: "опустошите хранилище",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S22",
+            name: "отравите скот",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S23",
+            name: "Спрячьте контрабанду",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S24",
+            name: "поджарьте информатора",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S25",
+            name: "похитьте любовницу",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+          {
+            id: "S26",
+            name: "Распространите болезнь",
+            desc: "Экстренная эвакуация объекта",
+            img: "https://via.placeholder.com/200x120",
+          },
+        ],
+      };
+
+      const variatorGroups = [
+        {
+          name: "Особые события",
+          items: [
+            {
+              id: "V1",
+              name: "Сильнее вместе",
+              desc: "Держитесь поближе к своим друзьям или получайте урон! Диапазон голосового чата ограничен",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["V2", "V3", "V4", "V5", "V6", "J6", "Y2", "Y3"],
+            },
+            {
+              id: "V2",
+              name: "Резкая похолодание",
+              desc: "Зона испытания периодически заполняется обжигающе холодным воздухом! Прячьтесь, чтобы выжить",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["V1", "V3", "V4", "V5", "V6", "J6", "Y2", "Y3"],
+            },
+            {
+              id: "V3",
+              name: "Токсический шок",
+              desc: "Место испытания иногда заполняется токсичным газом нанося всем постоянный урон. Чтобы выжить прячьтесь",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["V1", "V2", "V4", "V5", "V6", "J6", "Y2", "Y3"],
+            },
+            {
+              id: "V4",
+              name: "Таймер бомбы",
+              desc: "На каждом реагенте закреплена взрывчатка с таймером",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: [
+                "V1",
+                "V3",
+                "V2",
+                "V5",
+                "V6",
+                "J6",
+                "Y2",
+                "Y3",
+                "U4",
+              ],
+            },
+            {
+              id: "V5",
+              name: "Франка Барби",
+              desc: "В испытании появляется Франко Барби",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["V1", "V2", "V4", "V3", "V6", "J6", "Y2", "Y3"],
+            },
+            {
+              id: "V6",
+              name: "Самое главное",
+              desc: "В испытании участвует несколько главных активов",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["V1", "V2", "V4", "V5", "V3", "J6", "Y2", "Y3"],
+            },
+          ],
         },
         {
-            id: 'L2',
-            name: 'Измельчите негодяев',
-            desc: 'Доставьте стукача в камеру смерти',
-            // img: 'https://via.placeholder.com/200x120'
+          name: "Побочное задание",
+          items: [
+            {
+              id: "U1",
+              name: "Cбор подарков",
+              desc: "Найдите все подарки в испытании",
+              img: "https://via.placeholder.com/80x60",
+              conflicts: ["U2", "U3", "U4", "U5", "U6", "U7"],
+            },
+            {
+              id: "U2",
+              name: "Сбор крыс",
+              desc: "Найдите всех одурманенных крыс в испытании",
+              img: "https://via.placeholder.com/80x60",
+              conflicts: ["U1", "U3", "U4", "U5", "U6", "U7"],
+            },
+            {
+              id: "U3",
+              name: "Извлеките образцы органов",
+              desc: "Найдите погибших реагентов и извлеките образцы органов для анализа",
+              img: "https://via.placeholder.com/80x60",
+              conflicts: ["U2", "U1", "U4", "U5", "U6", "U7", "Y3"],
+            },
+            {
+              id: "U4",
+              name: "Разбейте телевизоры",
+              desc: "Разбейте все неисправные телевизоры",
+              img: "https://via.placeholder.com/80x60",
+              conflicts: [
+                "U2",
+                "U3",
+                "U1",
+                "U5",
+                "U6",
+                "U7",
+                "V4",
+                "I5",
+              ],
+            },
+            {
+              id: "U5",
+              name: "Находите радиопередатчики",
+              desc: "Находите в испытаниях радиопередатчики И прекращайте их вещание",
+              img: "https://via.placeholder.com/80x60",
+              conflicts: ["U2", "U3", "U4", "U1", "U6", "U7"],
+            },
+            {
+              id: "U6",
+              name: "Собирайте схемы",
+              desc: "Соберитесь схемы в испытании",
+              img: "https://via.placeholder.com/80x60",
+              conflicts: ["U2", "U3", "U4", "U5", "U1", "U7"],
+            },
+            {
+              id: "U7",
+              name: "Найдите трансляцию",
+              desc: "В испытании вам оставили сообщения Найдите трансляцию и уничтожьте",
+              img: "https://via.placeholder.com/80x60",
+              conflicts: ["U2", "U3", "U4", "U5", "U6", "U1"],
+            },
+          ],
         },
         {
-            id: 'L3',
-            name: 'Причастите сирот',
-            desc: 'Доставьте стукача в камеру смерти',
-            // img: 'https://via.placeholder.com/200x120'
+          name: "Наборы",
+          items: [
+            {
+              id: "G1",
+              name: "Повышенная угроза",
+              desc: "Больше сильных врагов",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["G2", "G6", "J1", "J2", "D1", "D2"],
+            },
+            {
+              id: "G2",
+              name: "Повышена угроза 2",
+              desc: "Максимальное количество жестоких врагов",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["G1", "G6", "J1", "J2", "D1", "D2"],
+            },
+            {
+              id: "G3",
+              name: "Больше ловушек",
+              desc: "Дополнительные смертельно опасныя ловушки",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["G4", "T1", "T2", "T3", "T4", "T5", "T7", "T0"],
+            },
+            {
+              id: "G4",
+              name: "Больше ловушек 2",
+              desc: "Максимальное количество смертельно опасных ловушек",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["G3", "T1", "T2", "T3", "T4", "T5", "T7", "T0"],
+            },
+            {
+              id: "G5",
+              name: "Ненадёжные двери",
+              desc: "Дополнительно забаррикадированная, заминированное и закрытые двери в испытании",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["T6", "Z1", "Z2", "Z3", "Z4", "Z5"],
+            },
+            {
+              id: "G6",
+              name: "Психохирургия",
+              desc: "Максимальная травма. Максима максимум жёстких врагов именно игроков скрыты максимальный психоз",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["G1", "G2", "J1", "J2", "D1", "D2", "O7", "P5"],
+            },
+          ],
         },
         {
-            id: 'L4',
-            name: 'Оправдать виновного',
-            desc: 'Доставьте стукача в камеру смерти',
-            // img: 'https://via.placeholder.com/200x120'
+          name: "Экс-попы",
+          items: [
+            {
+              id: "J1",
+              name: "Низкая плотность врагов",
+              desc: "Меньше врагов в испытании",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["G2", "G6", "G1", "J2", "D1", "D2"],
+            },
+            {
+              id: "J2",
+              name: "Много противников",
+              desc: "Больше врагов в испытании",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["G2", "G6", "G1", "J1", "D1", "D2"],
+            },
+            {
+              id: "J3",
+              name: "Больше толкачей",
+              desc: "Больше толкачей в испытании",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["J4", "J5", "J6"],
+            },
+            {
+              id: "J4",
+              name: "Больше притворщиков",
+              desc: "Больше притворщиков в испытаний",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["J3", "J5", "J6"],
+            },
+            {
+              id: "J5",
+              name: "Больше бросателей",
+              desc: "Больше бросателей в испытании",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["J4", "J3", "J6"],
+            },
+            {
+              id: "J6",
+              name: "Егерь",
+              desc: "Испытании постоянно участвует экс-поп Егерь",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: [
+                "J4",
+                "J5",
+                "J3",
+                "V1",
+                "V2",
+                "V3",
+                "V4",
+                "V5",
+                "V6",
+                "Y2",
+                "Y3",
+              ],
+            },
+          ],
         },
         {
-            id: 'L5',
-            name: 'Извратить футерманао',
-            desc: 'Доставьте стукача в камеру смерти',
-            // img: 'https://via.placeholder.com/200x120'
+          name: "Источники урона",
+          items: [
+            {
+              id: "D1",
+              name: "Враги сильнее",
+              desc: "Враги сильнее и смертоноснее",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["G1", "G2", "G6", "D2"],
+            },
+            {
+              id: "D2",
+              name: "Враги сильнее II",
+              desc: "Беспощадные смертоносные враги",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["G1", "G2", "G6", "D1"],
+            },
+            {
+              id: "D3",
+              name: "Разъярённые враги",
+              desc: "Все враги в повышенной боевой готовности!",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["O8"],
+            },
+            {
+              id: "D4",
+              name: "Кровотечение",
+              desc: "При получении урона будет открываться кровотечение. Ищите бинты, чтобы останавливать его",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["P4"],
+            },
+            {
+              id: "D5",
+              name: "Смертельный главный актив",
+              desc: "Главные активы убивают с одного удара",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: [],
+            },
+          ],
         },
         {
-            id: 'L6',
-            name: 'Отравите лекарство',
-            desc: 'Доставьте стукача в камеру смерти',
-            // img: 'https://via.placeholder.com/200x120'
+          name: "Модификаторы реагентов",
+          items: [
+            {
+              id: "M1",
+              name: "Первый уровень",
+              desc: "Без рецептов, без амфов, без улучшения снаряжения",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: [
+                "M2",
+                "M3",
+                "M4",
+                "M5",
+                "M6",
+                "M7",
+                "M8",
+                "M9",
+              ],
+            },
+            {
+              id: "M2",
+              name: "Без рецептов",
+              desc: "Рецепты недоступны",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["M1"],
+            },
+            {
+              id: "M3",
+              name: "Без снаряжения",
+              desc: "Снаряжения недоступно",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["M1", "M5", "M6", "M7", "M8", "M9"],
+            },
+            {
+              id: "M4",
+              name: "Без амфов",
+              desc: "Амфы недоступны",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["M1"],
+            },
+            {
+              id: "M5",
+              name: "Без улучшения снаряжения",
+              desc: "Улучшение для снаряжения недоступны",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["M1", "M3", "M6", "M7", "M8", "M9"],
+            },
+            {
+              id: "M6",
+              name: "Увеличенная перезарядка снаряжения",
+              desc: "Длительность перезарядки снаряжения значительно повышен",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["M1", "M3", "M5", "M7", "M8", "M9"],
+            },
+            {
+              id: "M7",
+              name: "Ограниченные снаряжение",
+              desc: "Снаряжение не перезаряжается со временем. Используйте зарядку снаряжения",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["M1", "M3", "M5", "M6", "M8", "M9"],
+            },
+            {
+              id: "M8",
+              name: "Урон перезапускает снаряжение",
+              desc: "Каждый раз, когда реагент получает урон, перезарядка снаряжения начинается заново",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["M1", "M3", "M5", "M7", "M6", "M9"],
+            },
+            {
+              id: "M9",
+              name: "Урон отключает снаряжение",
+              desc: "При получении урона в снаряжение временно отключается",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["M1", "M3", "M5", "M7", "M8", "M6"],
+            },
+          ],
         },
         {
-            id: 'L7',
-            name: 'Порадуйте прокурора',
-            desc: 'Доставьте стукача в камеру смерти',
-            // img: 'https://via.placeholder.com/200x120'
+          name: "Предметы и инвентарь",
+          items: [
+            {
+              id: "I1",
+              name: "ограниченные предметы",
+              desc: "количество предметов для поиска в испытании ограничено",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["I2", "I3", "I4", "I5", "I6", "I7"],
+            },
+            {
+              id: "I2",
+              name: "ограниченные предметы 2",
+              desc: "количество предметов в испытании значительно уменьшено",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["I1", "I3", "I4", "I5", "I6", "I7"],
+            },
+            {
+              id: "I3",
+              name: "без медицинских предметов",
+              desc: "в испытании недоступны медицинские предметы",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["I2", "I1", "I4", "I5", "I6", "I7"],
+            },
+            {
+              id: "I4",
+              name: "без технических предметов",
+              desc: "Амфы недоступны",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["I2", "I3", "I1", "I5", "I6", "I7"],
+            },
+            {
+              id: "I5",
+              name: "без предметов в испытании",
+              desc: "в испытании невозможно найти предметы",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: [
+                "I2",
+                "I3",
+                "I4",
+                "I1",
+                "I6",
+                "I7",
+                "U4",
+                "Z2",
+              ],
+            },
+            {
+              id: "I6",
+              name: "закрытые предметы",
+              desc: "большинство предметов можно найти только в запертых контейнерах",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["I2", "I3", "I4", "I5", "I1", "I7"],
+            },
+            {
+              id: "I7",
+              name: "только предметы для бросания",
+              desc: "в испытании можно найти только предметы для бросания",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["I2", "I3", "I4", "I5", "I6", "I1"],
+            },
+            {
+              id: "I8",
+              name: "ограниченный инвентарь",
+              desc: "недоступна одна ячейка в инвентаре",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["I9"],
+            },
+            {
+              id: "I9",
+              name: "ограниченный инвентарь 2",
+              desc: "недоступны две ячейки в инвентаре",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["I8"],
+            },
+          ],
         },
         {
-            id: 'L8',
-            name: 'Ликвидируйте профсоюз',
-            desc: 'Доставьте стукача в камеру смерти',
-            // img: 'https://via.placeholder.com/200x120'
+          name: "Ловушки",
+          items: [
+            {
+              id: "T1",
+              name: "больше ловушек",
+              desc: "больше ловушек в испытании",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["G3", "G4", "T2", "T3", "T4", "T5", "T7"],
+            },
+            {
+              id: "T2",
+              name: "больше ловушек 2",
+              desc: "максимальное количество ловушек в испытании",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["G3", "G4", "T1", "T3", "T4", "T5", "T7"],
+            },
+            {
+              id: "T3",
+              name: "больше звуковых ловушек",
+              desc: "больше звуковых ловушек в испытании",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["G3", "G4", "T1", "T2", "T4", "T5", "T7"],
+            },
+            {
+              id: "T4",
+              name: "больше мин психоза",
+              desc: "ещё больше мин психоза в испытании",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["G3", "G4", "T1", "T2", "T3", "T5", "T7"],
+            },
+            {
+              id: "T5",
+              name: "дополнительные ловушки главного актива",
+              desc: "дополнительные ловушки главного актива",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["G3", "G4", "T1", "T2", "T4", "T3", "T7"],
+            },
+            {
+              id: "T6",
+              name: "больше дверных ловушек",
+              desc: "больше заминированных дверей в испытаний",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["G5", "Z1", "Z2", "Z3", "Z4", "Z5"],
+            },
+            {
+              id: "T7",
+              name: "ледяные мины",
+              desc: "газовые мины заменены на ледяные мины",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["G3", "G4", "T1", "T2", "T4", "T3", "T5"],
+            },
+            {
+              id: "T8",
+              name: "взрывчатка",
+              desc: "газовые мины заменены на смертельные взрывчатые мины",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["T7"],
+            },
+            {
+              id: "T9",
+              name: "острое стекло",
+              desc: "ходьба по разбитому стеклу наносит урон и накладывает кровотечение",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: [],
+            },
+            {
+              id: "T0",
+              name: "смертельная ловушки",
+              desc: "ловушки убивают",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["G3", "G4"],
+            },
+          ],
+        },
+        {
+          name: "Психоз",
+          items: [
+            {
+              id: "P1",
+              name: "Bad Trip",
+              desc: "рассудок никогда не восстанавливаются на полную",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["P2", "P3", "P4"],
+            },
+            {
+              id: "P2",
+              name: "Bad Trip II",
+              desc: "рассудок почти не восстанавливается",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["P1", "P3", "P4"],
+            },
+            {
+              id: "P3",
+              name: "галлюцинации",
+              desc: "побочные эффекты травма или ещё что-то",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["P1", "P2"],
+            },
+            {
+              id: "P4",
+              name: "урон с психозом",
+              desc: "урон вызывает психоз",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["P1", "P2", "D4"],
+            },
+            {
+              id: "P5",
+              name: "экстремальный психоз",
+              desc: "бывшие попы больше не будут игнорировать вас во время действия психоза",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["G6"],
+            },
+          ],
+        },
+        {
+          name: "Препятствия",
+          items: [
+            {
+              id: "Z1",
+              name: "заблокированная проходы",
+              desc: "больше заблокированных дверей и откатных ворот в испытании",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["G5", "T6", "Z2", "Z3", "Z4", "Z5"],
+            },
+            {
+              id: "Z2",
+              name: "запертые двери",
+              desc: "дополнительные двери с навесными замками в испытаниях",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["G5", "I5", "T6", "Z1", "Z3", "Z4", "Z5"],
+            },
+            {
+              id: "Z3",
+              name: "забитые двери",
+              desc: "дополнительные двери в испытании забитые досками",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["G5", "T6", "Z1", "Z2", "Z4", "Z5"],
+            },
+            {
+              id: "Z4",
+              name: "заблокированная дверь",
+              desc: "дополнительные двери заблокированные полностью",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["G5", "T6", "Z1", "Z2", "Z3", "Z5"],
+            },
+            {
+              id: "Z5",
+              name: "закрытые откатные ворота",
+              desc: "ещё больше откатных ворот закрыты",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["G5", "T6", "Z1", "Z2", "Z3", "Z4"],
+            },
+          ],
+        },
+        {
+          name: "Откатные ворота",
+          items: [
+            {
+              id: "B1",
+              name: "ворота с детектором звука",
+              desc: "откатные ворота заменяются на ворота с детектором звука",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["B2", "B3", "B4", "B5"],
+            },
+            {
+              id: "B2",
+              name: "дистанционная ворота",
+              desc: "некоторые откатные ворота можно открыть с помощью находящейся поблизости панели управления",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["B1", "B3", "B4", "B5"],
+            },
+            {
+              id: "B3",
+              name: "бесконтактные ворота",
+              desc: "откатные ворота временно закроются если они обнаружат в игрока",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["B1", "B2", "B4", "B5"],
+            },
+            {
+              id: "B4",
+              name: "временное ворота",
+              desc: "  откатные ворота будут открываться и закрываться с задержкой",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["B1", "B2", "B3", "B5"],
+            },
+            {
+              id: "B5",
+              name: "закрытие ворот",
+              desc: "откатные ворота закрываются после нескольких проходов через них",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["B1", "B2", "B3", "B4"],
+            },
+          ],
+        },
+        {
+          name: "Другие",
+          items: [
+            {
+              id: "O1",
+              name: "ограниченное укрытие",
+              desc: "количество укрытий в испытаний уменьшено",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["O2"],
+            },
+            {
+              id: "O2",
+              name: "ограниченное укрытие 2",
+              desc: "количество укрытий в испытании значительно уменьшено",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["O1"],
+            },
+            {
+              id: "O3",
+              name: "без рации",
+              desc: " слышны только голоса поблизости",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: [],
+            },
+            {
+              id: "O4",
+              name: "без оживлений",
+              desc: "в испытании нет шприцов для кооператива и оживина для соло без возрождений в соло",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: [],
+            },
+            {
+              id: "O5",
+              name: "ограниченная информация",
+              desc: "подробности задания в испытаний ограничены",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["O6"],
+            },
+            {
+              id: "O6",
+              name: "никакой информации",
+              desc: "в испытании нет подробностей задания",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["O5"],
+            },
+            {
+              id: "O7",
+              name: " Без имён",
+              desc: "имена игроков будут скрыты",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["G6"],
+            },
+            {
+              id: "O8",
+              name: "Не шумите",
+              desc: "враги превосходно слышат но плохо видят",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["D3"],
+            },
+            {
+              id: "O9",
+              name: "нарушение тишины",
+              desc: "враги могут слышать Ваши разговоры",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: [],
+            },
+            {
+              id: "Y1",
+              name: "все на выход",
+              desc: "вам даётся только 30 секунд чтобы покинуть испытание",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: [],
+            },
+            {
+              id: "Y2",
+              name: "нехватка здоровья",
+              desc: "запас здоровья ограничен ищите специальное пилюли чтобы восполнять его",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: ["Y3", "J6", "V2", "V3", "V4", "V5", "V6", "V1"],
+            },
+            {
+              id: "Y3",
+              name: "камеры наблюдения",
+              desc: "в испытаниях установлены камеры наблюдения при обнаружении вы получите болезненный удар током также будет оповещён ближайший экс-поп",
+              // img: 'https://via.placeholder.com/80x60',
+              conflicts: [
+                "Y2",
+                "I1",
+                "J6",
+                "V2",
+                "V3",
+                "V4",
+                "V5",
+                "V6",
+                "V1",
+                "U3",
+              ],
+            },
+          ],
+        },
+      ];
+
+      let currentState = {
+        selectedTrial: null,
+        selectedVariators: new Map(),
+      };
+      console.log("🚀 ~ currentState:", currentState);
+
+      function init() {
+        createSlots();
+        showMainMenu();
+        setupFocusHandlers();
+      }
+
+      function createSlots() {
+        const slotsContainer = document.getElementById("variatorSlots");
+        for (let i = 1; i <= 6; i++) {
+          const slot = document.createElement("div");
+          slot.className = "variator-slot focusable";
+          slot.dataset.slot = i;
+          slot.tabIndex = 0;
+          slot.onclick = () => showVariatorCategories();
+          slotsContainer.appendChild(slot);
         }
-    ],
-    short: [
-        {
-            id: 'S1',
-            name: 'Отмените вскрытие',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S2',
-            name: 'Cаботируйте карантин',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S3',
-            name: 'уничтожьте прошлое',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S4',
-            name: 'Освободите заключённых',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S5',
-            name: 'обучите полицейского',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S6',
-            name: 'накажите негодяев',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S7',
-            name: 'Откройте ворота',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S8',
-            name: 'сломайте футерманов',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S9',
-            name: 'просверлить футермана',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S10',
-            name: 'накормить детей',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S11',
-            name: 'приютите сирот',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S12',
-            name: 'воссоедините семью',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S13',
-            name: 'Соберите детей божьих',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S14',
-            name: 'сбегите из суда',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S15',
-            name: 'уничтожьте улики',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S16',
-            name: 'запятая отпирающий механизм',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S17',
-            name: 'склоните Весы правосудия',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S18',
-            name: 'раздавите секс игрушки',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S19',
-            name: 'сожгите секс игрушки',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S20',
-            name: 'Прекратите работу фабрики',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S21',
-            name: 'опустошите хранилище',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S22',
-            name: 'отравите скот',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S23',
-            name: 'Спрячьте контрабанду',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S24',
-            name: 'поджарьте информатора',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S25',
-            name: 'похитьте любовницу',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
-        {
-            id: 'S26',
-            name: 'Распространите болезнь',
-            desc: 'Экстренная эвакуация объекта',
-            img: 'https://via.placeholder.com/200x120'
-        },
+      }
 
-    ]
-};
-
-const variatorGroups = [
-    {
-        name: 'Особые события',
-        items: [
-            {
-                id: 'V1',
-                name: 'Сильнее вместе',
-                desc: 'Держитесь поближе к своим друзьям или получайте урон! Диапазон голосового чата ограничен',
-                // img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V3']
-            },
-            {
-                id: 'V2',
-                name: 'Резкая похолодание',
-                desc: 'Зона испытания периодически заполняется обжигающе холодным воздухом! Прячьтесь, чтобы выжить',
-                // img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V3']
-            },
-            {
-                id: 'V3',
-                name: 'Токсический шок',
-                desc: 'Место испытания иногда заполняется токсичным газом нанося всем постоянный урон. Чтобы выжить прячьтесь',
-                // img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V3']
-            },
-            {
-                id: 'V4',
-                name: 'Таймер бомбы',
-                desc: 'На каждом реагенте закреплена взрывчатка с таймером',
-                // img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V3']
-            },
-            {
-                id: 'V5',
-                name: 'Франка Барби',
-                desc: 'В испытании появляется Франко Барби',
-                // img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V3']
-            },
-            {
-                id: 'V6',
-                name: 'Самое главное',
-                desc: 'В испытании участвует несколько главных активов',
-                // img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V3']
-            },
-        ]
-    },
-    {
-        name: 'Побочное задание',
-        items: [
-            {
-                id: 'SQ1',
-                name: 'Cбор подарков',
-                desc: 'Найдите все подарки в испытании',
-                img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V5']
-            },
-            {
-                id: 'SQ2',
-                name: 'Сбор крыс',
-                desc: 'Найдите всех одурманенных крыс в испытании',
-                img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V5']
-            },
-            {
-                id: 'SQ3',
-                name: 'Извлеките образцы органов',
-                desc: 'Найдите погибших реагентов и извлеките образцы органов для анализа',
-                img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V5']
-            },
-            {
-                id: 'SQ4',
-                name: 'Разбейте телевизоры',
-                desc: 'Разбейте все неисправные телевизоры',
-                img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V5']
-            },
-            {
-                id: 'SQ5',
-                name: 'Находите радиопередатчики',
-                desc: 'Находите в испытаниях радиопередатчики И прекращайте их вещание',
-                img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V5']
-            },
-            {
-                id: 'SQ6',
-                name: 'Собирайте схемы',
-                desc: 'Соберитесь схемы в испытании',
-                img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V5']
-            },
-            {
-                id: 'SQ7',
-                name: 'Найдите трансляцию',
-                desc: 'В испытании вам оставили сообщения Найдите трансляцию и уничтожьте',
-                img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V5']
-            }
-        ]
-    },
-    {
-        name: 'Наборы',
-        items: [
-            {
-                id: 'G1',
-                name: 'Повышенная угроза',
-                desc: 'Больше сильных врагов',
-                // img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V5']
-            },
-            {
-                id: 'G2',
-                name: 'Повышена угроза 2',
-                desc: 'Максимальное количество жестоких врагов',
-                // img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V5']
-            },
-            {
-                id: 'G3',
-                name: 'Больше ловушек',
-                desc: 'Дополнительные смертельно опасныя ловушки',
-                // img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V5']
-            },
-            {
-                id: 'G4',
-                name: 'Больше ловушек 2',
-                desc: 'Максимальное количество смертельно опасных ловушек',
-                // img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V5']
-            },
-            {
-                id: 'G5',
-                name: 'Ненадёжные двери',
-                desc: 'Дополнительно забаррикадированная, заминированное и закрытые двери в испытании',
-                // img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V5']
-            },
-            {
-                id: 'G6',
-                name: 'Психохирургия',
-                desc: 'Максимальная травма. Максима максимум жёстких врагов именно игроков скрыты максимальный психоз',
-                // img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V5']
-            },
-        ]
-    },
-    {
-        name: 'Экс-попы',
-        items: [
-            {
-                id: 'EP1',
-                name: 'Низкая плотность врагов',
-                desc: 'Меньше врагов в испытании',
-                // img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V5']
-            },
-            {
-                id: 'EP2',
-                name: 'Много противников',
-                desc: 'Больше врагов в испытании',
-                // img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V5']
-            },
-            {
-                id: 'EP3',
-                name: 'Больше толкачей',
-                desc: 'Больше толкачей в испытании',
-                // img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V5']
-            },
-            {
-                id: 'EP4',
-                name: 'Больше притворщиков',
-                desc: 'Больше притворщиков в испытаний',
-                // img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V5']
-            },
-            {
-                id: 'EP5',
-                name: 'Больше бросателей',
-                desc: 'Больше бросателей в испытании',
-                // img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V5']
-            },
-            {
-                id: 'EP6',
-                name: 'Егерь',
-                desc: 'Испытании постоянно участвует экс-поп Егерь',
-                // img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V5']
-            }
-        ]
-    }
-];
-
-let currentState = {
-    selectedTrial: null,
-    selectedVariators: new Map()
-};
-
-function init() {
-    createSlots();
-    showMainMenu();
-    setupFocusHandlers();
-}
-
-function createSlots() {
-    const slotsContainer = document.getElementById('variatorSlots');
-    for(let i = 1; i <= 6; i++) {
-        const slot = document.createElement('div');
-        slot.className = 'variator-slot focusable';
-        slot.dataset.slot = i;
-        slot.tabIndex = 0;
-        slot.onclick = () => showVariatorCategories();
-        slotsContainer.appendChild(slot);
-    }
-}
-
-function setupFocusHandlers() {
-    // Добавляем обработчики для всех фокусируемых элементов
-    document.querySelectorAll('.focusable').forEach(el => {
-        el.addEventListener('focus', () => {
-            el.classList.add('focused');
+      function setupFocusHandlers() {
+        // Добавляем обработчики для всех фокусируемых элементов
+        document.querySelectorAll(".focusable").forEach((el) => {
+          el.addEventListener("focus", () => {
+            el.classList.add("focused");
+          });
+          el.addEventListener("blur", () => {
+            el.classList.remove("focused");
+          });
         });
-        el.addEventListener('blur', () => {
-            el.classList.remove('focused');
-        });
-    });
-}
+      }
 
-function showMainMenu() {
-    const html = `
+      function showMainMenu() {
+        const html = `
         <div class="category-header">ТИПЫ ИСПЫТАНИЙ</div>
-        ${Object.entries(trials).map(([type, items]) => `
+        ${Object.entries(trials)
+          .map(
+            ([type, items]) => `
             <div class="item-card focusable" tabindex="0" onclick="showTrials('${type}')">
                 <div>
                     <h3>${type.toUpperCase()}</h3>
                     <p>${items.length} вариантов</p>
                 </div>
             </div>
-        `).join('')}
+        `
+          )
+          .join("")}
     `;
-    document.getElementById('selectionPanel').innerHTML = html;
-    setupFocusHandlers();
-}
+        document.getElementById("selectionPanel").innerHTML = html;
+        setupFocusHandlers();
+      }
 
-function showTrials(type) {
-    const html = `
+      function showTrials(type) {
+        const html = `
         <div class="category-header">${type.toUpperCase()}</div>
-        ${trials[type].map(trial => `
+        ${trials[type]
+          .map(
+            (trial) => `
             <div class="item-card focusable" tabindex="0" onclick="selectTrial('${trial.id}')">
                 <img src="images/${trial.id}.png" alt="${trial.name}">
                 <div>
@@ -648,134 +1192,175 @@ function showTrials(type) {
                     <p>${trial.desc}</p>
                 </div>
             </div>
-        `).join('')}
+        `
+          )
+          .join("")}
     `;
-    document.getElementById('selectionPanel').innerHTML = html;
-    setupFocusHandlers();
-}
+        document.getElementById("selectionPanel").innerHTML = html;
+        setupFocusHandlers();
+      }
 
-function selectTrial(trialId) {
-    const trial = [...trials.long, ...trials.short].find(t => t.id === trialId);
-    currentState.selectedTrial = trial;
-    
-    document.getElementById('trialContent').innerHTML = `
+      function selectTrial(trialId) {
+        const trial = [...trials.long, ...trials.short].find(
+          (t) => t.id === trialId
+        );
+        currentState.selectedTrial = trial;
+
+        document.getElementById("trialContent").innerHTML = `
         <img src="images/${trial.id}.png" alt="${trial.name}">
         <h3>${trial.name}</h3>
         <p>${trial.desc}</p>
     `;
-    updateCode();
-}
+        updateCode();
+      }
 
-function showVariatorCategories() {
-    const html = `
+      function showVariatorCategories() {
+        const html = `
         <div class="category-header">КАТЕГОРИИ ВАРИАТОРОВ</div>
-        ${variatorGroups.map(group => `
+        ${variatorGroups
+          .map(
+            (group) => `
             <div class="item-card focusable" tabindex="0" onclick="showVariators('${group.name}')">
                 <div>
                     <h3>${group.name}</h3>
                     <p>${group.items.length} вариантов</p>
                 </div>
             </div>
-        `).join('')}
+        `
+          )
+          .join("")}
     `;
-    document.getElementById('selectionPanel').innerHTML = html;
-    setupFocusHandlers();
-}
+        document.getElementById("selectionPanel").innerHTML = html;
+        setupFocusHandlers();
+      }
 
-function showVariators(groupName) {
-    const group = variatorGroups.find(g => g.name === groupName);
-    const html = `
+      function addClass(variator) {
+        let nameClassDisable = '';
+        currentState.selectedVariators.forEach((existing, slot) => {
+          if (existing.conflicts?.includes(variator.id)) {
+            nameClassDisable = 'disable'
+
+          }
+        })
+        return nameClassDisable
+      }
+
+      function showVariators(groupName) {
+        const group = variatorGroups.find((g) => g.name === groupName);
+        const html = `
         <div class="category-header">${groupName}</div>
-        ${group.items.map(variator => `
-            <div class="item-card focusable" tabindex="0" onclick="selectVariator('${variator.id}')">
+        ${group.items
+          .map(
+            (variator) => `
+            <div class="item-card focusable ${addClass(variator)}" tabindex="0" onclick="selectVariator('${variator.id}')">
                 <img src="images/${variator.id}.png" alt="${variator.name}">
                 <div>
                     <h3>${variator.name}</h3>
                     <p>${variator.desc}</p>
                 </div>
             </div>
-        `).join('')}
+        `
+          )
+          .join("")}
     `;
-    document.getElementById('selectionPanel').innerHTML = html;
-    setupFocusHandlers();
-}
+        document.getElementById("selectionPanel").innerHTML = html;
+        setupFocusHandlers();
+      }
 
-function selectVariator(variatorId, specificSlot = null) {
-    const variator = variatorGroups.flatMap(g => g.items).find(v => v.id === variatorId);
-    const slot = specificSlot || document.querySelector(`.variator-slot:not(.filled)`);
-    
-    if (!slot || currentState.selectedVariators.size >= 6) return;
-    
-    checkConflicts(variator);
-    
-    slot.classList.add('filled');
-    slot.innerHTML = `
+      function selectVariator(variatorId, specificSlot = null) {
+        const variator = variatorGroups
+          .flatMap((g) => g.items)
+          .find((v) => v.id === variatorId);
+        const slot =
+          specificSlot || document.querySelector(`.variator-slot:not(.filled)`);
+
+        if (!slot || currentState.selectedVariators.size >= 6) return;
+        slot.classList.add("filled");
+        checkConflicts(variator);
+
+        slot.innerHTML = `
         <img src="images/${variator.id}.png" style="width:120px;height:100px">
     `;
-            // <div>${variator.name}</div>
-    currentState.selectedVariators.set(slot.dataset.slot, variator);
-    updateInterface();
-    slot.focus();
-}
+        // <div>${variator.name}</div>
+        currentState.selectedVariators.set(slot.dataset.slot, variator);
+        updateInterface();
+        slot.focus();
+        showVariatorCategories();
+      }
 
-function checkConflicts(newVariator) {
-    currentState.selectedVariators.forEach((existing, slot) => {
-        if (existing.conflicts?.includes(newVariator.id)) {
+      function checkConflicts(newVariator) {
+        currentState.selectedVariators.forEach((existing, slot) => {
+          if (existing.conflicts?.includes(newVariator.id)) {
             currentState.selectedVariators.delete(slot);
-            document.querySelector(`[data-slot="${slot}"]`).classList.remove('filled');
+            document
+              .querySelector(`[data-slot="${slot}"]`)
+              .classList.remove("filled");
+          }
+        });
+      }
+
+      function updateInterface() {
+        document.getElementById("variatorCount").textContent =
+          currentState.selectedVariators.size;
+        updateCode();
+      }
+
+      function updateCode() {
+        const trialCode = currentState.selectedTrial?.id || "XXXX";
+        const variatorCodes = Array.from(
+          currentState.selectedVariators.values()
+        )
+          .map((v) => v.id)
+          .join("");
+        const fullCode = `${trialCode}${variatorCodes}`;
+        document.getElementById("codeOutput").value = fullCode;
+      }
+
+      function applyCode() {
+        const code = document
+          .getElementById("codeInput")
+          .value.replace("КОД ИСПЫТАНИЯ: ", "");
+        const trialId = code.substring(0, 2);
+        const variatorIds = code.substring(2).match(/.{2}/g) || [];
+
+        console.log("🚀 ~ applyCode ~ variatorIds:", variatorIds)
+        currentState.selectedTrial = null;
+        currentState.selectedVariators.clear();
+        document.querySelectorAll(".variator-slot").forEach((slot) => {
+          slot.classList.remove("filled");
+          slot.innerHTML = "";
+        });
+
+        const trial = [...trials.long, ...trials.short].find(
+
+          (t) => t.id === trialId
+        );
+        console.log("🚀 ~ applyCode ~ trial:", trial)
+        if (trial) {
+          selectTrial(trial.id);
+          document.querySelector(".selected-trial").focus();
         }
-    });
-}
 
-function updateInterface() {
-    document.getElementById('variatorCount').textContent = currentState.selectedVariators.size;
-    updateCode();
-}
-
-function updateCode() {
-    const trialCode = currentState.selectedTrial?.id || 'XXXX';
-    const variatorCodes = Array.from(currentState.selectedVariators.values())
-                            .map(v => v.id.substring(1)).join('');
-    const fullCode = `КОД ИСПЫТАНИЯ: ${trialCode}${variatorCodes}`;
-    document.getElementById('codeOutput').value = fullCode;
-}
-
-function applyCode() {
-    const code = document.getElementById('codeInput').value.replace('КОД ИСПЫТАНИЯ: ', '');
-    const trialId = code.substring(0, 2);
-    const variatorIds = code.substring(2).match(/.{2}/g) || [];
-    
-    currentState.selectedTrial = null;
-    currentState.selectedVariators.clear();
-    document.querySelectorAll('.variator-slot').forEach(slot => {
-        slot.classList.remove('filled');
-        slot.innerHTML = '';
-    });
-
-    const trial = [...trials.long, ...trials.short].find(t => t.id === trialId);
-    if(trial) {
-        selectTrial(trial.id);
-        document.querySelector('.selected-trial').focus();
-    }
-    
-    variatorIds.forEach((vid, index) => {
-        const variator = variatorGroups.flatMap(g => g.items).find(v => v.id === `V${vid}`);
-        if(variator && index < 6) {
+        variatorIds.forEach((vid, index) => {
+          const variator = variatorGroups
+            .flatMap((g) => g.items)
+            .find((v) => v.id === `${vid}`);
+          if (variator && index < 6) {
             const slot = document.querySelector(`[data-slot="${index + 1}"]`);
-            if(slot) selectVariator(variator.id, slot);
-        }
-    });
-}
+            if (slot) selectVariator(variator.id, slot);
+          }
+        });
+      }
 
-function copyCode() {
-    const codeOutput = document.getElementById('codeOutput');
-    codeOutput.select();
-    document.execCommand('copy');
-    alert('Код скопирован в буфер обмена!');
-    codeOutput.blur();
-}
+      function copyCode() {
+        const codeOutput = document.getElementById("codeOutput");
+        codeOutput.select();
+        document.execCommand("copy");
+        alert("Код скопирован в буфер обмена!");
+        codeOutput.blur();
+      }
 
-init();
-</script>
-</body>
+      init();
+    </script>
+  </body>
 </html>
