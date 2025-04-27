@@ -51,7 +51,7 @@
 
         .selected-trial img {
             width: 100%;
-            height: 200px;
+            height: 210px;
             object-fit: cover;
             margin-bottom: 15px;
         }
@@ -182,49 +182,49 @@ const trials = {
             id: 'L1',
             name: 'УБЕЙТЕ СТУКАЧА',
             desc: 'Доставьте стукача в камеру смерти',
-            img: 'images/L1.png'
+            // img: 'images/L1.png'
         },
         {
             id: 'L2',
             name: 'Измельчите негодяев',
             desc: 'Доставьте стукача в камеру смерти',
-            img: 'https://via.placeholder.com/200x120'
+            // img: 'https://via.placeholder.com/200x120'
         },
         {
             id: 'L3',
             name: 'Причастите сирот',
             desc: 'Доставьте стукача в камеру смерти',
-            img: 'https://via.placeholder.com/200x120'
+            // img: 'https://via.placeholder.com/200x120'
         },
         {
             id: 'L4',
             name: 'Оправдать виновного',
             desc: 'Доставьте стукача в камеру смерти',
-            img: 'https://via.placeholder.com/200x120'
+            // img: 'https://via.placeholder.com/200x120'
         },
         {
             id: 'L5',
             name: 'Извратить футерманао',
             desc: 'Доставьте стукача в камеру смерти',
-            img: 'https://via.placeholder.com/200x120'
+            // img: 'https://via.placeholder.com/200x120'
         },
         {
             id: 'L6',
             name: 'Отравите лекарство',
             desc: 'Доставьте стукача в камеру смерти',
-            img: 'https://via.placeholder.com/200x120'
+            // img: 'https://via.placeholder.com/200x120'
         },
         {
             id: 'L7',
             name: 'Порадуйте прокурора',
             desc: 'Доставьте стукача в камеру смерти',
-            img: 'https://via.placeholder.com/200x120'
+            // img: 'https://via.placeholder.com/200x120'
         },
         {
             id: 'L8',
             name: 'Ликвидируйте профсоюз',
             desc: 'Доставьте стукача в камеру смерти',
-            img: 'https://via.placeholder.com/200x120'
+            // img: 'https://via.placeholder.com/200x120'
         }
     ],
     short: [
@@ -396,42 +396,42 @@ const variatorGroups = [
                 id: 'V1',
                 name: 'Сильнее вместе',
                 desc: 'Держитесь поближе к своим друзьям или получайте урон! Диапазон голосового чата ограничен',
-                img: 'https://via.placeholder.com/80x60',
+                // img: 'https://via.placeholder.com/80x60',
                 conflicts: ['V3']
             },
             {
                 id: 'V2',
                 name: 'Резкая похолодание',
                 desc: 'Зона испытания периодически заполняется обжигающе холодным воздухом! Прячьтесь, чтобы выжить',
-                img: 'https://via.placeholder.com/80x60',
+                // img: 'https://via.placeholder.com/80x60',
                 conflicts: ['V3']
             },
             {
                 id: 'V3',
                 name: 'Токсический шок',
                 desc: 'Место испытания иногда заполняется токсичным газом нанося всем постоянный урон. Чтобы выжить прячьтесь',
-                img: 'https://via.placeholder.com/80x60',
+                // img: 'https://via.placeholder.com/80x60',
                 conflicts: ['V3']
             },
             {
                 id: 'V4',
                 name: 'Таймер бомбы',
                 desc: 'На каждом реагенте закреплена взрывчатка с таймером',
-                img: 'https://via.placeholder.com/80x60',
+                // img: 'https://via.placeholder.com/80x60',
                 conflicts: ['V3']
             },
             {
                 id: 'V5',
                 name: 'Франка Барби',
                 desc: 'В испытании появляется Франко Барби',
-                img: 'https://via.placeholder.com/80x60',
+                // img: 'https://via.placeholder.com/80x60',
                 conflicts: ['V3']
             },
             {
                 id: 'V6',
                 name: 'Самое главное',
                 desc: 'В испытании участвует несколько главных активов',
-                img: 'https://via.placeholder.com/80x60',
+                // img: 'https://via.placeholder.com/80x60',
                 conflicts: ['V3']
             },
         ]
@@ -476,40 +476,110 @@ const variatorGroups = [
             },
             {
                 id: 'SQ6',
-                name: 'Найдите трансляцию',
-                desc: 'В испытании вам оставили сообщения Найдите трансляцию и уничтожьте',
-                img: 'https://via.placeholder.com/80x60',
-                conflicts: ['V5']
-            },
-            {
-                id: 'SQ7',
                 name: 'Собирайте схемы',
                 desc: 'Соберитесь схемы в испытании',
                 img: 'https://via.placeholder.com/80x60',
                 conflicts: ['V5']
             },
-        ]
-    },
-    {
-        name: 'Наборы',
-        items: [
             {
-                id: 'V2',
-                name: 'Электрические барьеры',
-                desc: 'Ловушки с высоким напряжением',
+                id: 'SQ7',
+                name: 'Найдите трансляцию',
+                desc: 'В испытании вам оставили сообщения Найдите трансляцию и уничтожьте',
                 img: 'https://via.placeholder.com/80x60',
                 conflicts: ['V5']
             }
         ]
     },
     {
-        name: 'Ловушки',
+        name: 'Наборы',
         items: [
             {
-                id: 'V2',
-                name: 'Электрические барьеры',
-                desc: 'Ловушки с высоким напряжением',
-                img: 'https://via.placeholder.com/80x60',
+                id: 'G1',
+                name: 'Повышенная угроза',
+                desc: 'Больше сильных врагов',
+                // img: 'https://via.placeholder.com/80x60',
+                conflicts: ['V5']
+            },
+            {
+                id: 'G2',
+                name: 'Повышена угроза 2',
+                desc: 'Максимальное количество жестоких врагов',
+                // img: 'https://via.placeholder.com/80x60',
+                conflicts: ['V5']
+            },
+            {
+                id: 'G3',
+                name: 'Больше ловушек',
+                desc: 'Дополнительные смертельно опасныя ловушки',
+                // img: 'https://via.placeholder.com/80x60',
+                conflicts: ['V5']
+            },
+            {
+                id: 'G4',
+                name: 'Больше ловушек 2',
+                desc: 'Максимальное количество смертельно опасных ловушек',
+                // img: 'https://via.placeholder.com/80x60',
+                conflicts: ['V5']
+            },
+            {
+                id: 'G5',
+                name: 'Ненадёжные двери',
+                desc: 'Дополнительно забаррикадированная, заминированное и закрытые двери в испытании',
+                // img: 'https://via.placeholder.com/80x60',
+                conflicts: ['V5']
+            },
+            {
+                id: 'G6',
+                name: 'Психохирургия',
+                desc: 'Максимальная травма. Максима максимум жёстких врагов именно игроков скрыты максимальный психоз',
+                // img: 'https://via.placeholder.com/80x60',
+                conflicts: ['V5']
+            },
+        ]
+    },
+    {
+        name: 'Экс-попы',
+        items: [
+            {
+                id: 'EP1',
+                name: 'Низкая плотность врагов',
+                desc: 'Меньше врагов в испытании',
+                // img: 'https://via.placeholder.com/80x60',
+                conflicts: ['V5']
+            },
+            {
+                id: 'EP2',
+                name: 'Много противников',
+                desc: 'Больше врагов в испытании',
+                // img: 'https://via.placeholder.com/80x60',
+                conflicts: ['V5']
+            },
+            {
+                id: 'EP3',
+                name: 'Больше толкачей',
+                desc: 'Больше толкачей в испытании',
+                // img: 'https://via.placeholder.com/80x60',
+                conflicts: ['V5']
+            },
+            {
+                id: 'EP4',
+                name: 'Больше притворщиков',
+                desc: 'Больше притворщиков в испытаний',
+                // img: 'https://via.placeholder.com/80x60',
+                conflicts: ['V5']
+            },
+            {
+                id: 'EP5',
+                name: 'Больше бросателей',
+                desc: 'Больше бросателей в испытании',
+                // img: 'https://via.placeholder.com/80x60',
+                conflicts: ['V5']
+            },
+            {
+                id: 'EP6',
+                name: 'Егерь',
+                desc: 'Испытании постоянно участвует экс-поп Егерь',
+                // img: 'https://via.placeholder.com/80x60',
                 conflicts: ['V5']
             }
         ]
@@ -572,7 +642,7 @@ function showTrials(type) {
         <div class="category-header">${type.toUpperCase()}</div>
         ${trials[type].map(trial => `
             <div class="item-card focusable" tabindex="0" onclick="selectTrial('${trial.id}')">
-                <img src="${trial.img}" alt="${trial.name}">
+                <img src="images/${trial.id}.png" alt="${trial.name}">
                 <div>
                     <h3>${trial.name}</h3>
                     <p>${trial.desc}</p>
@@ -589,7 +659,7 @@ function selectTrial(trialId) {
     currentState.selectedTrial = trial;
     
     document.getElementById('trialContent').innerHTML = `
-        <img src="${trial.img}" alt="${trial.name}">
+        <img src="images/${trial.id}.png" alt="${trial.name}">
         <h3>${trial.name}</h3>
         <p>${trial.desc}</p>
     `;
@@ -618,7 +688,7 @@ function showVariators(groupName) {
         <div class="category-header">${groupName}</div>
         ${group.items.map(variator => `
             <div class="item-card focusable" tabindex="0" onclick="selectVariator('${variator.id}')">
-                <img src="${variator.img}" alt="${variator.name}">
+                <img src="images/${variator.id}.png" alt="${variator.name}">
                 <div>
                     <h3>${variator.name}</h3>
                     <p>${variator.desc}</p>
@@ -640,10 +710,9 @@ function selectVariator(variatorId, specificSlot = null) {
     
     slot.classList.add('filled');
     slot.innerHTML = `
-        <img src="${variator.img}" style="width:50px;height:35px">
-        <div>${variator.name}</div>
+        <img src="images/${variator.id}.png" style="width:120px;height:100px">
     `;
-    
+            // <div>${variator.name}</div>
     currentState.selectedVariators.set(slot.dataset.slot, variator);
     updateInterface();
     slot.focus();
