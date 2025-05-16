@@ -1237,7 +1237,7 @@
       function addClass(variator) {
         let nameClassDisable = '';
         currentState.selectedVariators.forEach((existing, slot) => {
-          if (existing.conflicts?.includes(variator.id)) {
+          if (existing.conflicts?.includes(variator.id) || variator.id === existing.id) {
             nameClassDisable = 'disable'
 
           }
@@ -1335,7 +1335,6 @@
 
           (t) => t.id === trialId
         );
-        console.log("🚀 ~ applyCode ~ trial:", trial)
         if (trial) {
           selectTrial(trial.id);
           document.querySelector(".selected-trial").focus();
